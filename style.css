@@ -1,17 +1,13 @@
 /*font-family: 'Montserrat', sans-serif;*/
-body{
-    font-family: 'Montserrat', sans-serif; 
-    height: 100%;
+body, html{
+    font-family: 'Montserrat', sans-serif;
+    height: 100%; 
     margin: 0;
 }
 .hero-image {
-    /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+   
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("postit.jpg");
-  
-    /* Set a specific height */
-    height: 50%;
-  
-    /* Position and center the image to scale nicely on all screens */
+    height: 25%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -25,5 +21,28 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: 	white;
   }
+  h1 {
+    font-size: 90px;
+    font-weight: bolder;
+  }
+  h2 {
+    font-size: 50;
+    font-weight: bold;
+  }
+  button {
+    border: thin;
+    outline: whitesmoke;
+    display: inline-block;
+    padding: 10px 25px;
+    color: black;
+    background-color: #ddd;
+    text-align: center;
+    cursor: pointer;
+  }
+ button:hover {
+   background-color: #3a3935;
+   color: white;
+
+ }
