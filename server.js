@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 //connect to the cluster I created in Atlas
 const mongoDB = "mongodb+srv://anelson0112:10qpalzm7YGV@taskcluster.7xytg.mongodb.net/TaskListdb?retryWrites=true&w=majority";
-//call in Schemas
+//call in Schemas models
 var Item = require('./Models/ToDoItem.js');
 var List = require('./Models/ToDo.js');
 //accessing the connect method of mongoose
@@ -76,10 +76,13 @@ let holiday1 = new Item ({
     itemPriority: "Medium",
     completed   : false,
 });
+//save
 holiday1.save(function(err,item){
     if (err) return console.error(err);
     console.log(item);
         });
+
+        //add item
 let holiday2 = new Item ({
     itemName      : "Josh Gifts",
     assignee      : "Me",
@@ -87,12 +90,12 @@ let holiday2 = new Item ({
     completed     : false, 
 
 });
-
+//save
 holiday2.save(function(err,item){
     if (err) return console.error(err);
     console.log(item);
         });
-
+//add item
 let holiday3 = new Item ({
             itemName      : "Frankie Gifts",
             assignee      : "Me",
@@ -100,12 +103,12 @@ let holiday3 = new Item ({
             completed     : false,         
 
 });
-
+//save
 holiday3.save(function(err,item){
     if (err) return console.error(err);
     console.log(item);
         });
-
+// make new list
         var holidayList = new List({
             name  : "Holidays",
             items : [
@@ -116,7 +119,7 @@ holiday3.save(function(err,item){
             }); 
 
  
-
+//save new list
 holidayList.save(function(err,list){
         if (err) return console.error(err);
         console.log("Holiday list");
@@ -126,62 +129,28 @@ holidayList.save(function(err,list){
                 });
                 console.log(holidayList);    
                 
- //creating a method 
-/*itemSchema.methods.doIt = function () {
-     let reminder;
-     if (this.completed === false){
-         reminder = "You need to do" + this.itemName;
-     } else {
-         reminder = "Way to go" + this.itemName + "is done!"
-     };
-     console.log(reminder);
-
-    };*/
+ //call method from the itemSchema
 
  item1.doIt();
 
  holiday1.doIt();
 
- //find an item
- /*Item.find ({
-     itemName: "Do dishes"
- })
- .then (doc => {
-     console.log(doc)
- })
- .catch (err => {
-     console.error(err)
- })*/
+//find item and print it
 
  Item.find ({itemName : 'Grocery Shopping'},function (err, items){
      if (err) return console.error(err);
      console.log(items);
  });
  
-
+//find item and update it
  Item.findOneAndUpdate ({itemName: "Do Dishes"}, {itemPriority: "Low"}, function (err, item){
      if (err) return console.error(err);
      console.log(item);
-
     
-     
  });
-//updateing dishes name from "Do dishes to dishes"
-/* Item.findByIdAndUpdate(
-     {itemName : "Do Dishes"},
-     {itemName : "dishes" },
- )
- .then(function(item) {
-     console.log (item)
- })
- .catch(err=> {
-     console.error(err)
- });*/
- 
 
-            
 
-//delete method
+//delete item
 Item.deleteOne({itemName : "Parent Gifts"}, function(err,items){
     if (err) console.error(err);
     console.log(items);
