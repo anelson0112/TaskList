@@ -15,5 +15,16 @@ const itemSchema = new Schema ({
     timestamps : true,
 }
 );
+
+itemSchema.methods.doIt = function () {
+    let reminder;
+    if (this.completed === false){
+        reminder = "You need to do " + this.itemName;
+    } else {
+        reminder = "Way to go " + this.itemName + "is done!"
+    };
+    console.log(reminder);
+
+   };
 //export task schema
 module.exports = mongoose.model("Item", itemSchema);
