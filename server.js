@@ -135,18 +135,36 @@ holidayList.save(function(err,list){
 
  holiday1.doIt();
 
-//find item and print it
+//find item by name and print it
 
  Item.find ({itemName : 'Grocery Shopping'},function (err, items){
      if (err) return console.error(err);
      console.log(items);
  });
+
+ //find by id and print it
+ Item.findById(item2._id, function(err, item){
+     if (err)
+         return console.error(err);
+         console.log(item);
+     
+ });
  
-//find item and update it
+//find item and update it and save it
  Item.findOneAndUpdate ({itemName: "Do Dishes"}, {itemPriority: "Low"}, function (err, item){
      if (err) return console.error(err);
      console.log(item);
+    item.save();
     
+ });
+//find by id and update and save in the same funtion
+ Item.findById(holiday2._id, function (err, item){
+     item.set ({assignee: "You"});
+
+     item.save(function (err, updatedItem){
+         if (err) return console.err(err);
+         console.log(updatedItem);
+     });
  });
 
 
