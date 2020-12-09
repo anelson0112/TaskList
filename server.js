@@ -1,24 +1,67 @@
 //require mongoose- translates built in to  Node.JS
 const mongoose = require('mongoose'); 
 mongoose.set('useFindAndModify', false);
-//connect to the cluster I created in Atlas
-const mongoDB = "mongodb+srv://anelson0112:10qpalzm7YGV@taskcluster.7xytg.mongodb.net/TaskListdb?retryWrites=true&w=majority";
+
 //call in Schemas models
 var Item = require('./Models/ToDoItem.js');
 var List = require('./Models/ToDo.js');
+//require express
+const express = require('express');
+
+//grants access to all that express has to offer
+const app = express();
+
+//declare port we want to connect to
+const port = 3000;
+
+//connect to the cluster I created in Atlas
+const mongoDB = "mongodb+srv://anelson0112:10qpalzm7YGV@taskcluster.7xytg.mongodb.net/TaskListdb?retryWrites=true&w=majority";
+
 //accessing the connect method of mongoose
 //pass it the name of the DB cluster we have created
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
-
+//mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+    if(err) return console.error(err);
+    console.log('Connected to database');
+    });
 const db = mongoose.connection;
 
 //turns on the connection
-
 db.on('error', console.error.bind(console, 'connection error:'));
 
-//connects to the database one time, runs the method and stops
+//open up server, list on specific id and port
+//ip address aka hostnames
+app.listen(port, function(){
+    console.log("Server is running at " + port)
+});
 
-db.once('open', function(){
+/*app.get('/', function( request,response){
+    
+    Item.find (function (err, items){
+        if (err) return console.error(err);
+        response.send(items);
+    });
+});*/
+
+/*app.get('/', function( request,response){
+    
+    Item.find ({itemPriority : "Low"},function (err, items){
+        if (err) return console.error(err);
+        console.log(items);
+        response.send(items);
+    });
+});*/
+
+app.get('/', function( request,response){
+    
+    Item.find ({itemName : "Josh Gifts"},function (err, items){
+        if (err) return console.error(err);
+        console.log(items);
+        response.send(items);
+    });
+});
+//connects to the database one time, runs the method and stops
+/*db.once('open', function(){
     //test to see we're connected. 
     console.log("We're connected");
 
@@ -174,4 +217,4 @@ Item.deleteOne({itemName : "Parent Gifts"}, function(err,items){
     console.log(items);
 });
            
-});
+});*/

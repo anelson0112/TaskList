@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/anelson0112/TaskList/issues"
   },
-  "homepage": "https://github.com/anelson0112/TaskList#readme"
+  "homepage": "https://github.com/anelson0112/TaskList#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
