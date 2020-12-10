@@ -1,4 +1,3 @@
-//require mongoose- translates built in to  Node.JS
 const mongoose = require('mongoose'); 
 mongoose.set('useFindAndModify', false);
 
@@ -7,9 +6,6 @@ var Item = require('./Models/ToDoItem.js');
 var List = require('./Models/ToDo.js');
 //require express
 const express = require('express');
-
-//add path library
-const path = require ('path');
 
 //grants access to all that express has to offer
 const app = express();
@@ -29,60 +25,43 @@ mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, (er
     });
 const db = mongoose.connection;
 
-//turns on the connection
-db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+    //test to see we're connected. 
+    console.log("We're connected");
 
-//use the following middlware
-app.use(
-    //middleware for delivering static files
-    express.static(
-        //uses path library to take care of relative paths
-        path.join(__dirname, 'public')));
+    let item4 = new Item({
+        itemName      : "Dust",
+        assignee      : "Me",
+        itemPriority  : "Low",
+        completed     : false,
+       });
+   
+       let item5 = new Item ({
+           itemName      : "Make the Soup",
+           assignee      : "Me",
+           itemPriority  : "High",
+           completed     : false, 
+       });
 
-//open up server, list on specific id and port
-//ip address aka hostnames
-app.listen(port, function(){
-    console.log("Server is running at " + port)
+       let item6 = new Item({
+        itemName      : "Wash the car",
+        assignee      : "Me",
+        itemPriority  : "Medium",
+        completed     : false,
+       });
+   
+       let item7 = new Item ({
+           itemName      : "Nap",
+           assignee      : "Me",
+           itemPriority  : "High",
+           completed     : false, 
+       });
+
+item4.save();
+item5.save();
+item6.save();
+item7.save();
 });
-//finds all the items
-app.get('/items', function( request,response){
-    
-    Item.find (function (err, items){
-        if (err) return console.error(err);
-        response.send(items);
-    });
-});
-//finds all Low priority items
-/*app.get('/items/', function( request,response){
-    
-    Item.find ({itemPriority : "Low"},function (err, items){
-        if (err) return console.error(err);
-        console.log(items);
-        response.send(items);
-    });
-});
-//finds grocery shopping
-app.get('/items/grocery/', function( request,response){
-    let searchKey = new RegExp ('groc', 'i');
-    Item.find ({itemName: searchKey },function (err, items){
-        if (err) return console.error(err);
-        console.log(items);
-        response.send(items);
-    });
-});*/
-
-/*document.getElementById("addTask").onclick = function(){
-    location.href = '/add.html';
-}*/
-/*app.get('/items/', (request, response) => {
-    Item.find({_id: request.params.id}).exec((err, item) => {
-    if (err) return console.error(err);
-    response.send(item);
-    })
-    });*/
-    
-
-    
 //connects to the database one time, runs the method and stops
 /*db.once('open', function(){
     //test to see we're connected. 
