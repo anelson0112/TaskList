@@ -15,14 +15,15 @@ async function getToDoList(){
     
     function clickButton(){
         getToDoList().then(function(body){
-            let x = '';
+            
+            
             for(let i = 0; i < body.length; i++){
                 console.log(body[i].itemName); 
-
+                let node = document.createElement('li');
                 
                 
-                document.getElementById("taskList").innerHTML = 
-                //body[i].itemName + " " + body[i].assignee + " " + body[i].itemPriority;
+                document.body.appendChild(node).innerHTML = 
+                
 
                 `To do: ${body[i].itemName} - Assigned to: ${body[i].assignee} - Priority ${body[i].itemPriority}`;
             }
