@@ -8,7 +8,7 @@ const itemSchema = new Schema ({
     itemName  : String,
     assignee  : String,
     itemPriority  : {type: String, enum: ['High', 'Medium', 'Low']},
-    completed : Boolean,
+    completed : {type : Boolean, default : false},
 
 },
 {

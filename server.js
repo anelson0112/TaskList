@@ -2,6 +2,7 @@
 const mongoose = require('mongoose'); 
 mongoose.set('useFindAndModify', false);
 
+const bodyParser = require('body-parser');
 //call in Schemas models
 var Item = require('./Models/ToDoItem.js');
 var List = require('./Models/ToDo.js');
@@ -16,6 +17,8 @@ const app = express();
 
 //declare port we want to connect to
 const port = 3000;
+
+
 
 //connect to the cluster I created in Atlas
 const mongoDB = "mongodb+srv://anelson0112:10qpalzm7YGV@taskcluster.7xytg.mongodb.net/TaskListdb?retryWrites=true&w=majority";
@@ -39,6 +42,11 @@ app.use(
         //uses path library to take care of relative paths
         path.join(__dirname, 'public')));
 
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+
 //open up server, list on specific id and port
 //ip address aka hostnames
 app.listen(port, function(){
@@ -52,6 +60,26 @@ app.get('/items', function( request,response){
         response.send(items);
     });
 });
+
+app.post('/items', function( request,response){
+    let newTask = new Item (request.body);
+    newTask.save (function (err, item){
+        if (err){
+            response.sendStatus(500);
+            return console.error(err);
+        }
+        response.send(item);
+  
+    });
+
+});
+
+// app.delete('/items', function(request, response){
+//     Item.findOneAndUpdate ({itemName: require.params.id}, {completed: }, function (err, item){
+//         if (err) return console.error(err);
+//         console.log(item);
+//        item.save();
+//})
 //finds all Low priority items
 /*app.get('/items/', function( request,response){
     

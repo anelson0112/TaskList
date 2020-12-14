@@ -15,25 +15,30 @@
             <h2>Let's Get Organized</h2>
           </div>
         </div>
-        <form>
-          <div class = "form-group">
-           <label for = "itemName" >Enter Task</label>
-           <input type = "text" class = "form-control" id = "itemName" placeholder="Enter Task">
-          </div>
-          <div class = "form-group">
-            <label for = "assignee" >Who is doing it?</label>
-            <input type = "text" class = "form-control" id = "assignee" placeholder="Enter Name">
-           </div>
-           <div class = "form-group">
-             <label for = "itemPriority" >Priority</label>
-             <select class = "form-control" id =  "itemPriority">
-               <option>High</option>
-               <option>Medium</option>
-               <option>Low</option>
-             </select>
-           </div>
-           <button>Add Task</button>
-        </form>
         
+        <form  name = "AddTask" id="taskForm">
+          <div class = "form-control">
+           <label for = "itemName" >Enter Task</label>
+           <input type = "text" class = "form-control" id = "itemName" placeholder="Enter Task" name="itemName">
+          </div>
+          <div class = "form-control">
+            <label for = "assignee" >Who is doing it?</label>
+            <input type = "text" class = "form-control" id = "assignee" placeholder="Enter Name" name="assignee">
+           </div>
+           <div class = "form-control">
+             <label for = "itemPriority" >Priority</label>
+             <select class = "form-control" id =  "itemPriority" name="itemPriority">
+               <option value = "High">High</option>
+               <option value = "Medium">Medium</option>
+               <option value = "Low">Low</option>
+             </select>
+            </div>
+             <div class="form-control">
+           <button type="submit">Add Task</button>
+          </div>
+          
+        </form>
+      
+        <script src = "taskList.js"></script>   
     </body>
 </html>
