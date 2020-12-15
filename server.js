@@ -61,6 +61,14 @@ app.get('/items', function( request,response){
     });
 });
 
+app.get('/update', function( request,response){
+    
+    Item.findById (function (err, items){
+        if (err) return console.error(err);
+        response.send(items);
+    });
+});
+
 app.post('/items', function( request,response){
     let newTask = new Item (request.body);
     newTask.save (function (err, item){
@@ -72,6 +80,21 @@ app.post('/items', function( request,response){
   
     });
 
+});
+
+app.put('/items', function(request, response){
+    let id = req.params.id;
+
+    Item.findByIdAndUpdate(_id ,{"completed" : booleanValue},function (err, item){
+    
+    
+         if (err){ return console.error(err);
+        console.log(item);
+        item.save();
+    } 
+    response.send(item);
+})
+    
 });
 
 // app.delete('/items', function(request, response){
