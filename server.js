@@ -61,7 +61,7 @@ app.get('/items', function( request,response){
     });
 });
 //finding a single item by id
-app.get('/update', function( request,response){
+app.get('/update/:id', function( request,response){
     
     Item.findOne (function (err, items){
         if (err) return console.error(err);
@@ -106,11 +106,13 @@ app.put('/update/:id', function(request, response){
 
 //deleting a single item
 app.delete('/items/:id', function(request, response){
-    Item.deleteOne ({_id: request.params.id}, function (err, item){
+    console.log (request.params.id)
+    Item.deleteOne ({_id: request.params.id}, function (err){
        
-        if (err) return console.error(err);
+        if (err){ console.error(err);
+            return }
         console.log("deleted");
-        response.send(item);
+        response.sendStatus(204);
     });
 });
 
