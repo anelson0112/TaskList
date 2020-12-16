@@ -15,33 +15,37 @@
             <h2>Let's Get Organized</h2>
           </div>
         </div>
-      <div class = "container">  
+      <form method = "" action = ""> 
         <div class = "row">
           <div class = "col-md-4">
               <label for = "itemName" >Task</label>
-              <input type = "text" class = "form-control" id = "updateName" placeholder="Enter Task">
+              <input type = "text" class = "form-control" id = "updateName" name = "updateName" placeholder="Enter Task">
           </div>
           <div class = "col-md-3">
               <label for = "assignee" >Assignee </label>
-              <input type = "text" class = "form-control" id = "updateAssignee" placeholder="Enter Name">
+              <input type = "text" class = "form-control" id = "updateAssignee" name = "updateAssignee" placeholder="Enter Name">
           </div>
           <div class = "col-md-3" >
               <label  for = "itemPriority">Priority</label>
-              <select id =  "updateItemPriority" class = "form-control">
+              <select id =  "updateItemPriority" name = "updateItemPriority" class = "form-control">
                <option>High</option>
                <option>Medium</option>
                <option>Low</option>
               </select>
           </div>
           <div class = "checkbox col-md-2">
-             <label> Completed </label><input type="checkbox" class = "form-control">
+             <label> Completed ?</label><select  class = "form-control" id = "completed" name = "completed">
+                            <option value="true">Yes</option>
+             <option value= "false">No</option>
+             </select>
           </div>
         </div>
           <div class = "row">
-           <button>Update</button>
+           <button onclick="editItem()">Update</button>
           </div>
-        </div> 
-        
-        <script src = "taskList.js"></script>    
+      </form>
+        <!-- <script src = "singleItem.js"></script>   -->
+        <script src = "taskList.js"></script>
+          
     </body>
 </html>

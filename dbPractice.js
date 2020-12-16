@@ -62,6 +62,51 @@ item5.save();
 item6.save();
 item7.save();
 });
+function saveAndRedirect(){
+    addTask().then(function(){
+         returnToIndex(); 
+    }).catch(function(err){
+        //handle errors
+    })
+}
+
+let form = document.getElementById("taskForm");
+if(form)
+document.getElementById("taskForm").addEventListener('submit', function(event){
+ event.preventDefault();
+ saveAndRedirect(); 
+}); 
+async function addTask(){
+    let task = {
+                     //this.
+       itemName      : document.getElementById("itemName").value,
+       assignee      : document.getElementById("assignee").value,
+       itemPriority  : document.getElementById("itemPriority").value,
+    }
+
+    let addOptions = {
+        method   : "POST", 
+        body     : JSON.stringify(task),
+        headers  : {"Content-Type" : "application/json"},
+    }
+    console.log(task);
+    const response = await fetch("/items", addOptions);
+
+    if (response.status != 200){
+     
+        throw Error("Error adding");
+    }
+    return console.log(task);
+    
+
+    
+};
+
+
+
+
+
+
 //connects to the database one time, runs the method and stops
 /*db.once('open', function(){
     //test to see we're connected. 
@@ -220,3 +265,37 @@ Item.deleteOne({itemName : "Parent Gifts"}, function(err,items){
 });
            
 });*/
+let taskHTML = `
+<div class="task" data-id="${task._id}">
+    <div class="row">
+        <div class="name col-12 col-md-4">${task.name}</div>
+        <div class="assignee col-12 col-md-2">${task.assignedTo}</div>
+        <div class="priority ${task.priority.toLowerCase()} col-12 col-md-2">${task.priority}</div>
+        <div class="completed col-12 col-md-2" data-completed="${task.completed}" onclick="toggleCompleted(this)"><i class="fas fa-check-circle"></i></div>
+        <div class="edit col-12 col-md-1"><a href="./edit.html?id=${task._id}"><i class="fas fa-edit"></i></a></div>
+        <div class="delete col-12 col-md-1" onclick="deleteTask(this)"><i class="fas fa-trash"></i></div>
+    </div>
+</div>
+`;
+listContainer.innerHTML += taskHTML;
+
+
+async function editItem() {
+    let selectedItem = {
+    itemName: document.getElementById("itemName").value,
+    assignee: document.getElementById("assignee").value,
+    itemPriority: document.getElementById("itemPriority").value,
+    completionStatus: document.getElementById("completed").value,
+    };
+    let header = {
+    method: "PUT",
+    body: JSON.stringify(selectedItem),
+    headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch("/update/" + itemId, header);
+    if (response.status != 200) {
+    throw Error("We were unsuccessful with your update");
+    }
+    console.log("Hey, we did it!");
+    return selectedItem;
+    }
