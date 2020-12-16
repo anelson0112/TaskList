@@ -40,24 +40,22 @@ async function getToDoList(){
                      <input type = "checkbox" class = "completion" name = "completed" id = "completed">
                                  <labelfor = "completed">Completed</label> 
                      </div>           
-                     <div class="delete col-12 col-md-1" onclick="deleteItem(${body[i]._id})"><i class="fas fa-trash"></i></div>     
+                     <div class="delete col-12 col-md-1" id = "delete" data-id="${body[i]._id}"  ><i class="fas fa-trash" data-id="${body[i]._id}"></i></div>     
                      <div class="edit  col-md-1"><a href="./update.html?id=${body[i]._id}">Edit</a></div>
               </div>
             </div>`;
-             listDiv.innerHTML += itemHTML;
-                // let node = document.createElement('li');
-                // let box  = document.createElement("INPUT");
-                // box.setAttribute("type", "checkbox");
-                
-                
-                // document.body.appendChild(node).innerHTML = 
-                
 
-                // `To do: ${body[i].itemName} - Assigned to: ${body[i].assignee} - Priority ${body[i].itemPriority} `;
-                // document.body.appendChild(box);
+             listDiv.innerHTML += itemHTML;
             }
+    let deleteButtons = document.getElementsByClassName("delete"); 
+        for(let i = 0; i < deleteButtons.length; i++){
+            deleteButtons[i].addEventListener("click", function(event){
+                deleteItem(event.target.dataset.id); 
+                console.log(event.target);
+                
+            });
             
-            console.log(body); 
+        }
         }).catch(function(err){
             console.log(err); 
         }); 
@@ -68,7 +66,7 @@ async function getToDoList(){
 
        async function addTask(){
         let task = {
-                         //this.
+                         
            itemName      : document.getElementById("itemName").value,
            assignee      : document.getElementById("assignee").value,
            itemPriority  : document.getElementById("itemPriority").value,
@@ -107,93 +105,98 @@ async function getToDoList(){
         saveAndRedirect(); 
     }); 
 
- async function checkCompleted(){
-    let checkbox = document.getElementById("completed");
+    // async function checkCompleted(){
+    //     let requestOptions = {
+    //     method: "GET",
+    //     headers: {"Content-Type": "application/json"}
+    //     }
+        
+    //     const response = await fetch("/itemChecked", requestOptions);
+    //     const body = await response.json();
+    //     if(response.status != 200){
+    //         throw Error(body.message);
+    //     }
+    //     return body;
+        
+    //     }
+    //     function returnToIndex(){
+    //         location.href = "index.html";
+    
+    //    };
+ 
+       
 
    
-    checkbox.addEventListener("change", function (event){
-        event.preventDefault();
-        checkCompleted();
-    });
- }
-//     let complete = {
-//         completed = checkbox.value,
-//     }
-       
-//      let checkOptions = {
-//          method : "PUT",
-//          body   : JSON.stringify(task),
-//          headers: {"Content-Type" : "application/json"},
-//      }
+    // document.getElementById("completed").addEventListener("change", function (event){
+    //     event.preventDefault();
+    //     checkCompleted();
+    // });
 
-//      const response = await fetch('/update/:id', checkOptions);
-
-//      if (response.status != 200){
-//          throw Error("Error Updating")
-//      }
-//      return console.log("Updated");
-
-
-//  }
 
 //delete item function
-async function deleteItem(id){
+async function deleteItemRequest(id){
 
-    
+    // let data = {
+    //     _id : id,
+    // }
     let requestOptions = {
-    method: "DELETE",
-    headers: {"Content-Type": "application/json"}
+    method  : "DELETE",
+    //body    : JSON.stringify(data),
+    headers : {"Content-Type": "application/json"}
     }
-    //let deletedId = '${body[i]._id}'
-    confirm("Are you sure you want to delete?");
-        if (true){
+    console.log("About to fetch");
     const response = await fetch('/items/' + id, requestOptions);
-   
-    if(response.status != 200){
-        throw Error(body.message);
-    }
-    alert("Item Deleted");
-    return true;
-        } 
+    console.log(response);
+
+    return false;
+    
+    
+        
 
     };
-    
-    async function getSingleItem(){
+    function deleteItem(id){
+        confirm("Are you sure you want to delete?");
+        
+        deleteItemRequest(id).then(function(success){
+            alert("deleted")
+            returnToIndex();
+        }).catch(function(error){
+            console.log(error);
+        })
+    }
+    async function getSingleItem(id){
+        
+
         let requestOptions = {
             method : 'GET',
             headers: {"Content-Type" : "application/json"},
         }
         console.log("step one")
-        const response = await fetch("/update/" +id, requestOptions);
-        //const body = await response.json();
+        const response = await fetch('/update/' + id, requestOptions);
+        const body = await response.json();
         if (response.status != 200){
                
            throw Error("Error adding");
        }
-       return true ;
-    }
+       return  ;
+    };
     
     
-    let updateName = document.getElementById("updateName");
-    let updateAssignee = document.getElementById("updateAssignee");
-    // let prioritySelect = document.getElementId("updateItemPriority");
-    // let completedSelect = document.getElementById("completed");
+    // let updateName = document.getElementById("updateName");
+    // let updateAssignee = document.getElementById("updateAssignee");
+    // // let prioritySelect = document.getElementId("updateItemPriority");
+    // // let completedSelect = document.getElementById("completed");
     
-    getSingleItem().then(function() {    
-        updateName.value = body[i].itemName;
-        updateAssignee.value = item.assignee;
-        updateItemPriority.value = item.itemPriority;
-        updateComplete = item.completed;
-    }).catch(function(err){
-        console.log(err);
-    })
+    // getSingleItem().then(function(body) {    
+    //     updateName.value = body.itemName;
+    //     updateAssignee.value = assignee;
+    //     updateItemPriority.value = itemPriority;
+    //     updateComplete = completed;
+    // }).catch(function(err){
+    //     console.log(err);
+    // })
     
-    editItem().then( function(){
-        
-        returnToIndex();
-    }).catch(function (err){
     
-    });
     
     async function editItem() {
         let selectedItem = {
@@ -216,6 +219,16 @@ async function deleteItem(id){
         return selectedItem;
         }
    
+        editItem().then( function(){
+        
+            returnToIndex();
+        }).catch(function (err){
+        
+        });
 
 
-
+        //let body = {
+            
+            // itemName      : document.getElementById("itemName").value,
+            // assignee      : document.getElementById("assignee").value,
+            // itemPriority  : document.getElementById("itemPriority").value,
