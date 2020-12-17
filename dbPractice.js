@@ -299,3 +299,17 @@ async function editItem() {
     console.log("Hey, we did it!");
     return selectedItem;
     }
+///////////////////////////////////
+
+document.getElementById("delete").addEventListener("click", function (event){
+    deleteItem();
+})
+
+function deleteItem(){
+    deleteItemRequest().then(function(success){
+        alert("deleted");
+    }).catch(function(error){
+
+    })
+}
+
