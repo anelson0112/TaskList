@@ -61,13 +61,17 @@ app.get('/items', function( request,response){
     });
 });
 //finding a single item by id
-app.get('/update/:id', function( request,response){
-    
-    Item.findOne (function (err, items){
-        if (err) return console.error(err);
-        response.send(items);
+app.get('/item/:id', function(request, response){
+    console.log (request.params.id)
+    Item.deleteOne ({_id: request.params.id}, function (err){
+       
+        if (err){ console.error(err);
+            return }
+        console.log("got it");
+        response.sendStatus(200);
     });
 });
+
 //adding new items to the todo list
 app.post('/items', function( request,response){
     let newTask = new Item (request.body);

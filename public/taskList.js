@@ -164,37 +164,43 @@ async function deleteItemRequest(id){
             console.log(error);
         })
     }
-    async function getSingleItem(id){
-        
+    async function getSingleItem(){
+        // let single = {
+                         
+        //     itemName      : document.getElementById("itemName").value,
+        //     assignee      : document.getElementById("assignee").value,
+        //     itemPriority  : document.getElementById("itemPriority").value,
+        //     completed     : document.getElementById("completed").value,
+        //  }
 
         let requestOptions = {
             method : 'GET',
             headers: {"Content-Type" : "application/json"},
         }
         console.log("step one")
-        const response = await fetch('/update/' + id, requestOptions);
-        const body = await response.json();
+        const response = await fetch('/item/' + id, requestOptions);
+        //const body = await response.json();
         if (response.status != 200){
                
            throw Error("Error adding");
        }
-       return  ;
+       return  body //or true?;
     };
     
     
-    // let updateName = document.getElementById("updateName");
-    // let updateAssignee = document.getElementById("updateAssignee");
-    // // let prioritySelect = document.getElementId("updateItemPriority");
-    // // let completedSelect = document.getElementById("completed");
+    let updateName = document.getElementById("updateName");
+    let updateAssignee = document.getElementById("updateAssignee");
+    // let prioritySelect = document.getElementId("updateItemPriority");
+    // let completedSelect = document.getElementById("completed");
     
-    // getSingleItem().then(function(body) {    
-    //     updateName.value = body.itemName;
-    //     updateAssignee.value = assignee;
-    //     updateItemPriority.value = itemPriority;
-    //     updateComplete = completed;
-    // }).catch(function(err){
-    //     console.log(err);
-    // })
+    getSingleItem().then(function(item) {    
+        itemName.value = item.itemName;
+        assignee.value = item.assignee;
+        itemPriority.value = item.itemPriority;
+        complete.value = item.completed;
+    }).catch(function(err){
+        console.log(err);
+    })
     
     
     
