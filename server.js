@@ -63,12 +63,13 @@ app.get('/items', function( request,response){
 //finding a single item by id
 app.get('/item/:id', function(request, response){
     console.log (request.params.id)
-    Item.deleteOne ({_id: request.params.id}, function (err){
+    Item.findOne ({_id: request.params.id}, function (err, item){
        
-        if (err){ console.error(err);
+        if (err) { 
+            console.error(err);
             return }
-        console.log("got it");
-        response.sendStatus(200);
+        console.log(item);
+        response.status(200).send(item);
     });
 });
 
@@ -86,24 +87,22 @@ app.post('/items', function( request,response){
 
 });
 //trying to update any field of the todo list item
-app.put('/update/:id', function(request, response){
-    let id = req.params.id;
+app.put('/item/:id', function(request, response){
+    //let updatedItem = newItem(request.body);
+    console.log(request.params.id);
 
-    Item.findOne({ _id: req.params.id }).exec( (err, item)=> {
+    Item.findOneAndUpdate({_id: request.params.id },
+       
+        function (err, item){
 
-        if (err) return console.error(err);
-        item.itemName  = updated.itemName;
-        item.assignee  = updated.assignee;
-        item.itemPriority  = updated.itemPriority;
-        item.completed = updated.completed;
+        if (err) {
+            
+            console.error(err);
+            return true}
+      
 
-        try {
-            res.sendStatus(200);
-            item.save();
-        } catch {
-            res.sendStatus(500);
-        }
-
+        console.log(updatedItem);
+        response.status(200).save(item);
 
     });
 });
@@ -111,6 +110,7 @@ app.put('/update/:id', function(request, response){
 //deleting a single item
 app.delete('/items/:id', function(request, response){
     console.log (request.params.id)
+    
     Item.deleteOne ({_id: request.params.id}, function (err){
        
         if (err){ console.error(err);

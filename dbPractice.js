@@ -280,36 +280,131 @@ let taskHTML = `
 listContainer.innerHTML += taskHTML;
 
 
-async function editItem() {
-    let selectedItem = {
-    itemName: document.getElementById("itemName").value,
-    assignee: document.getElementById("assignee").value,
-    itemPriority: document.getElementById("itemPriority").value,
-    completionStatus: document.getElementById("completed").value,
-    };
-    let header = {
-    method: "PUT",
-    body: JSON.stringify(selectedItem),
-    headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch("/update/" + itemId, header);
-    if (response.status != 200) {
-    throw Error("We were unsuccessful with your update");
-    }
-    console.log("Hey, we did it!");
-    return selectedItem;
-    }
 ///////////////////////////////////
 
-document.getElementById("delete").addEventListener("click", function (event){
-    deleteItem();
-})
+app.put("/update/:id", function (req, res) {
+    let updated = new Item(req.body);
+    Item.findOne({ _id: req.params.id }).exec((err, item) => {
+    if (err) return console.error(err);
+    item.itemName = updated.itemName;
+    item.itemPriority = updated.itemPriority;
+    item.assignee = updated.assignee;
+    item.completionStatus = updated.completionStatus;
+    try {
+    res.sendStatus(200);
+    item.save();
+    } catch {
+    res.sendStatus(500);
+    }
+    });
+    });
 
-function deleteItem(){
-    deleteItemRequest().then(function(success){
-        alert("deleted");
-    }).catch(function(error){
+    async function editItem() {
+        let selectedItem = {
+        itemName: document.getElementById("itemName").value,
+        assignee: document.getElementById("assignee").value,
+        itemPriority: document.getElementById("itemPriority").value,
+        completionStatus: document.getElementById("completed").value,
+        };
+        let header = {
+        method: "PUT",
+        body: JSON.stringify(selectedItem),
+        headers: { "Content-Type": "application/json" },
+        };
+        const response = await fetch("/update/" + itemId, header);
+        if (response.status != 200) {
+        throw Error("We were unsuccessful with your update");
+        }
+        console.log("Hey, we did it!");
+        return selectedItem;
+    }
 
-    })
-}
+    async function getIndiv(id) {
+        let requestOptions = {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        };
+      
+        const response = await fetch("/items/" + id, requestOptions);
+        const body = await response.json();
+        if (response.status != 200) {
+          throw Error(body.message);
+        }
+        return body;
+      }
 
+
+      async function getSingleItem(){
+        
+
+        let requestOptions = {
+            method : 'GET',
+            headers: {"Content-Type" : "application/json"},
+        }
+        console.log("step one")
+        const response = await fetch('/item/' + id, requestOptions);
+        const body = await response.json();
+        if(response.status != 200){
+            throw Error(body.message);
+        }
+        return body;
+    };
+    
+    async function deleteItemRequest(id){
+
+        let requestOptions = {
+        method  : "DELETE",
+        //body    : JSON.stringify(data),
+        headers : {"Content-Type": "application/json"}
+        }
+        console.log("About to fetch");
+        const response = await fetch('/items/' + id, requestOptions);
+        console.log(response);
+    
+        return false;
+        
+        
+            
+    
+        };
+        function deleteItem(id){
+            confirm("Are you sure you want to delete?");
+            
+            deleteItemRequest(id).then(function(success){
+                alert("deleted")
+                returnToIndex();
+            }).catch(function(error){
+                console.log(error);
+            })
+        }
+        
+        let deleteButtons = document.getElementsByClassName("delete"); 
+        for(let i = 0; i < deleteButtons.length; i++){
+            deleteButtons[i].addEventListener("click", function(event){
+                deleteItem(event.target.dataset.id); 
+                console.log(event.target);
+                
+            });
+            
+        }
+        }).catch(function(err){
+            console.log(err); 
+        }); 
+       }
+
+
+       ///////////////
+       function saveAndRedirect(){
+        addTask().then(function(){
+             returnToIndex(); 
+        }).catch(function(err){
+            //handle errors
+        })
+    }
+
+    let form = document.getElementById("taskForm");
+    if(form)
+    document.getElementById("taskForm").addEventListener('submit', function(event){
+     event.preventDefault();
+     saveAndRedirect(); 
+ }); 

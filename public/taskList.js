@@ -136,9 +136,6 @@ async function getToDoList(){
 //delete item function
 async function deleteItemRequest(id){
 
-    // let data = {
-    //     _id : id,
-    // }
     let requestOptions = {
     method  : "DELETE",
     //body    : JSON.stringify(data),
@@ -164,14 +161,9 @@ async function deleteItemRequest(id){
             console.log(error);
         })
     }
+
     async function getSingleItem(){
-        // let single = {
-                         
-        //     itemName      : document.getElementById("itemName").value,
-        //     assignee      : document.getElementById("assignee").value,
-        //     itemPriority  : document.getElementById("itemPriority").value,
-        //     completed     : document.getElementById("completed").value,
-        //  }
+        
 
         let requestOptions = {
             method : 'GET',
@@ -179,62 +171,77 @@ async function deleteItemRequest(id){
         }
         console.log("step one")
         const response = await fetch('/item/' + id, requestOptions);
-        //const body = await response.json();
-        if (response.status != 200){
-               
-           throw Error("Error adding");
-       }
-       return  body //or true?;
+        const body = await response.json();
+        if(response.status != 200){
+            throw Error(body.message);
+        }
+        return body;
     };
     
-    
-    let updateName = document.getElementById("updateName");
-    let updateAssignee = document.getElementById("updateAssignee");
-    // let prioritySelect = document.getElementId("updateItemPriority");
-    // let completedSelect = document.getElementById("completed");
+    function updateUI(){
+    let itemName = document.getElementById("itemName");
+    let assignee = document.getElementById("assignee");
+   // let itemPriority = document.getElementId("itemPriority");
+//    let completed = document.getElementById("completed");
     
     getSingleItem().then(function(item) {    
         itemName.value = item.itemName;
         assignee.value = item.assignee;
-        itemPriority.value = item.itemPriority;
-        complete.value = item.completed;
+        //itemPriority.value = item.itemPriority;
+        completed.value = item.completed;
+        console.log(item);
     }).catch(function(err){
         console.log(err);
     })
-    
+}
     
     
     async function editItem() {
-        let selectedItem = {
-        itemName : document.getElementById("updateName").value,
-        assignee : document.getElementById("updateAssignee").value,
-        itemPriority : document.getElementId("updateItemPriority"),
-        completionStatus : document.getElementById("completed"),
-        };
-        let header = {
+       
+        let requestOptions = {
         method: "PUT",
         body: JSON.stringify(selectedItem),
         headers: { "Content-Type": "application/json" },
         };
-        const response = await fetch("/update/" + itemId, header);
+        console/log("are we here?")
+        const response = await fetch("/item/" + id, requestOptions);
+        const body = await response.json();
         if (response.status != 200) {
-        throw Error("Nope");
+        throw Error(body.message);
         }
-        returnToIndex();
+        
         console.log("Hey, we did it!");
-        return selectedItem;
-        }
+        return body;
+        };
+
+
    
-        editItem().then( function(){
+        function updateItem(){
+            let itemName = document.getElementById("itemName").value;
+            let assignee = document.getElementById("assignee").value;
+            let itemPriority = document.getElementById("itemPriority").value;
+            let completed = document.getElementById("completed").value;
+
+        editItem().then( function(item){
+            itemName.value = item.itemName;
+            assignee.value = item.assignee;
+            itemPriority.value = item.completed;
+            completed.value = item.completed;
+            console.log(item);
+
         
             returnToIndex();
         }).catch(function (err){
+            console.log(err)
         
         });
+    };
 
+    let update = document.getElementById("updateItem");
+    if (update)
+    document.getElementById("updateItem").addEventListener('submit', function (event){
+        event.preventDefault();
+        updateItem();
+    });
 
-        //let body = {
-            
-            // itemName      : document.getElementById("itemName").value,
-            // assignee      : document.getElementById("assignee").value,
-            // itemPriority  : document.getElementById("itemPriority").value,
+       

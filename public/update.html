@@ -8,14 +8,14 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
     </head>
-    <body onload = "getSingleItem()">
+    <body onload = "updateUI()">
         <div class="hero-image">
           <div class="hero-text">
             <h1>Task List</h1>
             <h2>Let's Get Organized</h2>
           </div>
         </div>
-      <form name = "updateTask" id = "updateForm" method = "GET">
+      <form name = "updateTask" id = "updateForm" >
         <div class = "row">
           <div class = "col-md-4">
               <label for="itemName">Task</label>
@@ -28,20 +28,20 @@
           <div class = "col-md-3" >
               <label for = "priority">Priority</label>
               <select id =  "priority" name = "updateItemPriority" class = "form-control">
-               <option>High</option>
-               <option>Medium</option>
-               <option>Low</option>
+               <option value = "High">High</option>
+               <option value = "Medium">Medium</option>
+               <option value = "Low">Low</option>
               </select>
           </div>
           <div class = "checkbox col-md-2">
              <label for = "completed"> Completed ?</label><select  class = "form-control" id = "completed" name = "completed">
-                            <option value="true">Yes</option>
-             <option value= "false">No</option>
+                            <option value="false">No</option>
+             <option value= "true">Yes</option>
              </select>
           </div>
         </div>
           <div class = "row">
-           <button onclick="editItem()">Update</button>
+           <button type = "submit" id = "updateItem">Update</button>
           </div>
         </form>
         <!-- <script src = "singleItem.js"></script>   -->
