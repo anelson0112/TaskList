@@ -8,7 +8,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
     </head>
-    <body onload = "updateUI()">
+    <!-- <body> -->
+    <body onload="updateUI()">
         <div class="hero-image">
           <div class="hero-text">
             <h1>Task List</h1>
@@ -19,21 +20,21 @@
         <div class = "row">
           <div class = "col-md-4">
               <label for="itemName">Task</label>
-              <input type = "text" class = "form-control" id = "itemName" name = "updateName" placeholder="Enter Task">
+              <input type = "text" class = "form-control" id = "itemName" name = "itemName" placeholder="Enter Task">
           </div>
           <div class = "col-md-3">
               <label for = "assignee">Assignee </label>
-              <input type = "text" class = "form-control" id = "assignee" name = "updateAssignee" placeholder="Enter Name">
+              <input type = "text" class = "form-control" id = "assignee" name = "assignee" placeholder="Enter Name">
           </div>
           <div class = "col-md-3" >
               <label for = "priority">Priority</label>
-              <select id =  "priority" name = "updateItemPriority" class = "form-control">
+              <select id =  "priority" name = "priority" class = "form-control">
                <option value = "High">High</option>
                <option value = "Medium">Medium</option>
                <option value = "Low">Low</option>
               </select>
           </div>
-          <div class = "checkbox col-md-2">
+          <div class = "col-md-2">
              <label for = "completed"> Completed ?</label><select  class = "form-control" id = "completed" name = "completed">
                             <option value="false">No</option>
              <option value= "true">Yes</option>
@@ -41,11 +42,20 @@
           </div>
         </div>
           <div class = "row">
-           <button type = "submit" id = "updateItem">Update</button>
+           <button  type = "submit"  id = "updateItem">Update</button>
           </div>
         </form>
         <!-- <script src = "singleItem.js"></script>   -->
-        <script src = "taskList.js"></script>
-          
+
+      <script> 
+      document.getElementById("updateForm").addEventListener('submit', function(e){
+        e.preventDefault();
+        updateItem();
+             console.log("here!");
+      });
+
+        </script>   
+        <script src = "taskList.js"></script>  
     </body>
+
 </html>

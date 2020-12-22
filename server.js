@@ -11,6 +11,7 @@ const express = require('express');
 
 //add path library
 const path = require ('path');
+//const { update } = require('./Models/ToDoItem.js');
 
 //grants access to all that express has to offer
 const app = express();
@@ -87,21 +88,22 @@ app.post('/items', function( request,response){
 
 });
 //trying to update any field of the todo list item
-app.put('/item/:id', function(request, response){
-    //let updatedItem = newItem(request.body);
+app.put('/update/:id', function(request, response){
+    
     console.log(request.params.id);
 
-    Item.findOneAndUpdate({_id: request.params.id },
+    Item.updateOne({ _id: request.params.id },  
        
         function (err, item){
 
         if (err) {
             
             console.error(err);
-            return true}
+            return true;
+            }
       
 
-        console.log(updatedItem);
+        console.log(item);
         response.status(200).save(item);
 
     });
@@ -119,6 +121,20 @@ app.delete('/items/:id', function(request, response){
         response.sendStatus(204);
     });
 });
+//patch sincle item with checkbox
+app.patch('/items/:id', function(request, response)
+{
+    console.log(request.params.id)
 
+    Item.findOneAndUpdate({_id: request.params.id},
+        function (err){
+            if (err){
+                console.error(err);
+                return
+            }
+            console.log("updated");
+            response.status(200);
+        });
+});
 
  
