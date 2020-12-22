@@ -89,22 +89,26 @@ app.post('/items', function( request,response){
 });
 //trying to update any field of the todo list item
 app.put('/update/:id', function(request, response){
+
+   let id = request.params.id;
     
     console.log(request.params.id);
-
-    Item.updateOne({ _id: request.params.id },  
+    console.log("put");
+    Item.findOneAndUpdate({_id: request.params.id},{returnNewDocument: true},
        
         function (err, item){
 
         if (err) {
             
-            console.error(err);
-            return true;
+            response.sendStatus(500);
+            return console.error(err);
             }
       
 
         console.log(item);
-        response.status(200).save(item);
+        response.status(200);
+        item.send();
+        item.save();
 
     });
 });
