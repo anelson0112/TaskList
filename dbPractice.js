@@ -280,22 +280,41 @@ let taskHTML = `
 listContainer.innerHTML += taskHTML;
 
 
-async function editItem() {
-    let selectedItem = {
-    itemName: document.getElementById("itemName").value,
-    assignee: document.getElementById("assignee").value,
-    itemPriority: document.getElementById("itemPriority").value,
-    completionStatus: document.getElementById("completed").value,
-    };
-    let header = {
-    method: "PUT",
-    body: JSON.stringify(selectedItem),
-    headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch("/update/" + itemId, header);
-    if (response.status != 200) {
-    throw Error("We were unsuccessful with your update");
+///////////////////////////////////
+
+app.put("/update/:id", function (req, res) {
+    let updated = new Item(req.body);
+    Item.findOne({ _id: req.params.id }).exec((err, item) => {
+    if (err) return console.error(err);
+    item.itemName = updated.itemName;
+    item.itemPriority = updated.itemPriority;
+    item.assignee = updated.assignee;
+    item.completionStatus = updated.completionStatus;
+    try {
+    res.sendStatus(200);
+    item.save();
+    } catch {
+    res.sendStatus(500);
     }
-    console.log("Hey, we did it!");
-    return selectedItem;
-    }
+    });
+    });
+
+    async function editItem() {
+        let selectedItem = {
+        itemName: document.getElementById("itemName").value,
+        assignee: document.getElementById("assignee").value,
+        itemPriority: document.getElementById("itemPriority").value,
+        completionStatus: document.getElementById("completed").value,
+        };
+        let header = {
+        method: "PUT",
+        body: JSON.stringify(selectedItem),
+        headers: { "Content-Type": "application/json" },
+        };
+        const response = await fetch("/update/" + itemId, header);
+        if (response.status != 200) {
+        throw Error("We were unsuccessful with your update");
+        }
+        console.log("Hey, we did it!");
+        return selectedItem;
+        } 

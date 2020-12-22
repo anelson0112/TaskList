@@ -1,9 +1,8 @@
-// const urlParams = new URLSearchParams(window.location.search);
-//const taskId = urlParams.get('id');
+
 const url = window.location.href;
 const myUrl = new URL(url);
 let id = myUrl.searchParams.get('id');
-
+//load entire task list it is in an onload function with the index page
 async function getToDoList(){
     let requestOptions = {
     method: "GET",
@@ -17,12 +16,15 @@ async function getToDoList(){
     }
     return body;
     
-    }
+    };
+//function to return to home page
     function returnToIndex(){
         location.href = "index.html";
 
    };
-    
+
+  
+   //gets the list and then appends the div to load the actual tasks on the page    
     function taskList(){
         getToDoList().then(function(body){
             
@@ -37,16 +39,18 @@ async function getToDoList(){
                      <div class = "who  col-md-3">Who's doing it: ${body[i].assignee}</div>
                      <div class ="importance  col-md-2">Priority: ${body[i].itemPriority} </div>
                      <div class = col-md-2">
-                     <input type = "checkbox" class = "completion" name = "completed" id = "completed">
+                     <input type = "checkbox" class = "completed" name = "completed" id = "completed">
                                  <labelfor = "completed">Completed</label> 
                      </div>           
                      <div class="delete col-12 col-md-1" id = "delete" data-id="${body[i]._id}"  ><i class="fas fa-trash" data-id="${body[i]._id}"></i></div>     
-                     <div class="edit  col-md-1"><a href="./update.html?id=${body[i]._id}">Edit</a></div>
+                     <div class="edit  col-md-1" data-id="${body[i]._id}"><a href="./update.html?id=${body[i]._id}" data-id="${body[i]._id}">Edit</a></div>
               </div>
             </div>`;
 
              listDiv.innerHTML += itemHTML;
             }
+
+            //adds the event listener to the added delete buttons so items can be deleted when trash can is clicked
     let deleteButtons = document.getElementsByClassName("delete"); 
         for(let i = 0; i < deleteButtons.length; i++){
             deleteButtons[i].addEventListener("click", function(event){
@@ -59,11 +63,26 @@ async function getToDoList(){
         }).catch(function(err){
             console.log(err); 
         }); 
-       }
+    }
+   
+
+    //add event listener for checkboxes
+    // let checkbox = document.getElementsByClassName("completed"); 
+    //     for(let i = 0; i < checkbox.length; i++){
+    //         checkbox[i].addEventListener('change', function(event){
+    //             if (event.target.checked){
+    //                 checkCompleted();
+    //             }
+                
+    //         });
+            
+    //     }
+        
+       
 
     
        
-
+//async add task funtion
        async function addTask(){
         let task = {
                          
@@ -89,7 +108,7 @@ async function getToDoList(){
 
         
  };
-
+//function to save the item and then redirect to the index page
     function saveAndRedirect(){
            addTask().then(function(){
                 returnToIndex(); 
@@ -104,14 +123,17 @@ async function getToDoList(){
         event.preventDefault();
         saveAndRedirect(); 
     }); 
-
+//async button for checkbox
     // async function checkCompleted(){
+    //     let completed = {
+    //        completed = true, 
+    //     }
     //     let requestOptions = {
-    //     method: "GET",
+    //     method: "PATCH",
     //     headers: {"Content-Type": "application/json"}
     //     }
         
-    //     const response = await fetch("/itemChecked", requestOptions);
+    //     const response = await fetch("/items/:id", requestOptions);
     //     const body = await response.json();
     //     if(response.status != 200){
     //         throw Error(body.message);
@@ -120,7 +142,7 @@ async function getToDoList(){
         
     //     }
     //     function returnToIndex(){
-    //         location.href = "index.html";
+            
     
     //    };
  
@@ -136,9 +158,6 @@ async function getToDoList(){
 //delete item function
 async function deleteItemRequest(id){
 
-    // let data = {
-    //     _id : id,
-    // }
     let requestOptions = {
     method  : "DELETE",
     //body    : JSON.stringify(data),
@@ -152,7 +171,7 @@ async function deleteItemRequest(id){
     
     
         
-
+//confirms intent, then deletes item if confirmed, returns to index to updated task list
     };
     function deleteItem(id){
         confirm("Are you sure you want to delete?");
@@ -164,71 +183,94 @@ async function deleteItemRequest(id){
             console.log(error);
         })
     }
-    async function getSingleItem(id){
+//retrieves single item for update page
+    async function getSingleItem(){
         
 
         let requestOptions = {
             method : 'GET',
             headers: {"Content-Type" : "application/json"},
         }
-        console.log("step one")
-        const response = await fetch('/update/' + id, requestOptions);
+        console.log("get one item")
+        const response = await fetch('/item/' + id, requestOptions);
         const body = await response.json();
-        if (response.status != 200){
-               
-           throw Error("Error adding");
-       }
-       return  ;
+        if(response.status != 200){
+            throw Error(body.message);
+        }
+        return body;
     };
+//loads the update page with input fields loaded with the item content   
+    function updateUI(){
+    let itemName = document.getElementById("itemName");
+    let assignee = document.getElementById("assignee");
+   // let itemPriority = document.getElementId("itemPriority");
+//    let completed = document.getElementById("completed");
     
-    
-    // let updateName = document.getElementById("updateName");
-    // let updateAssignee = document.getElementById("updateAssignee");
-    // // let prioritySelect = document.getElementId("updateItemPriority");
-    // // let completedSelect = document.getElementById("completed");
-    
-    // getSingleItem().then(function(body) {    
-    //     updateName.value = body.itemName;
-    //     updateAssignee.value = assignee;
-    //     updateItemPriority.value = itemPriority;
-    //     updateComplete = completed;
-    // }).catch(function(err){
-    //     console.log(err);
-    // })
-    
-    
-    
+    getSingleItem().then(function(item) {    
+        itemName.value = item.itemName;
+        assignee.value = item.assignee;
+        //itemPriority.value = item.itemPriority;
+        completed.value = item.completed;
+        console.log("retrieved?")
+        console.log(item);
+    }).catch(function(err){
+        console.log(err);
+    })
+}
+
+       
+        
+//async funtion to edit items    
     async function editItem() {
-        let selectedItem = {
-        itemName : document.getElementById("updateName").value,
-        assignee : document.getElementById("updateAssignee").value,
-        itemPriority : document.getElementId("updateItemPriority"),
-        completionStatus : document.getElementById("completed"),
-        };
-        let header = {
+        let taskUpdate = {
+                         
+            itemName      : document.getElementById("itemName").value,
+            assignee      : document.getElementById("assignee").value,
+            itemPriority  : document.getElementById("priority").value,
+            completed     : document.getElementById("completed").value, 
+         }
+        let requestOptions = {
         method: "PUT",
-        body: JSON.stringify(selectedItem),
+        body: JSON.stringify(taskUpdate),
         headers: { "Content-Type": "application/json" },
         };
-        const response = await fetch("/update/" + itemId, header);
+        console.log("are we here?")
+        const response = await fetch("/update/", requestOptions);
+        const body = await response.json();
         if (response.status != 200) {
-        throw Error("Nope");
+            console.log("What about here?")
+        throw Error("Not updates");
         }
-        returnToIndex();
-        console.log("Hey, we did it!");
-        return selectedItem;
-        }
-   
-        editItem().then( function(){
         
+        console.log("Hey, we did it!");
+        return true;
+        };
+
+
+   //takes the information from the input fields and updates them, should return to index page and load updated list.
+        function updateItem(){
+            let itemName = document.getElementById("itemName").value;
+            let assignee = document.getElementById("assignee").value;
+            let priority = document.getElementById("priority").value;
+            let completed = document.getElementById("completed").value;
+            console.log("new value?")
+        editItem().then( function(item){
+            itemName.value = item.itemName;
+            assignee.value = item.assignee;
+            priority.value = item.itemPriority;
+            completed.value = item.completed;
+            console.log(item);
+
+            
             returnToIndex();
         }).catch(function (err){
+            console.log(err)
         
         });
+    };
+
+    
 
 
-        //let body = {
-            
-            // itemName      : document.getElementById("itemName").value,
-            // assignee      : document.getElementById("assignee").value,
-            // itemPriority  : document.getElementById("itemPriority").value,
+
+       
