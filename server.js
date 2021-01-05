@@ -119,7 +119,8 @@ app.delete('/items/:id', function(request, response){
     
     Item.deleteOne ({_id: request.params.id}, function (err){
        
-        if (err){ console.error(err);
+        if (err){ 
+            console.error(err);
             return }
         console.log("deleted");
         response.sendStatus(204);
