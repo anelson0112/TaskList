@@ -89,12 +89,12 @@ app.post('/items', function( request,response){
 });
 //trying to update any field of the todo list item
 app.put('/update/:id', function(request, response){
-
+   
    let id = request.params.id;
     
     console.log(request.params.id);
     console.log("put");
-    Item.findOneAndUpdate({_id: request.params.id},{returnNewDocument: true},
+    Item.findOneAndUpdate({id},{returnNewDocument: true},
        
         function (err, item){
 
@@ -104,11 +104,12 @@ app.put('/update/:id', function(request, response){
             return console.error(err);
             }
       
-
+        
         console.log(item);
         response.status(200);
-        item.send();
+        //response.send(item);
         item.save();
+        
 
     });
 });

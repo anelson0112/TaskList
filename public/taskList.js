@@ -236,7 +236,7 @@ async function deleteItemRequest(id){
         };
         console.log("are we here?");
 
-        const response = await fetch("/update/" , requestOptions);
+        const response = await fetch("/update/" + id, requestOptions);
         console.log(taskUpdate);
         //const body = await response.json();
         if (response.status != 200) {
