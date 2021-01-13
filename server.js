@@ -1,6 +1,8 @@
 //require mongoose- translates built in to  Node.JS
 const mongoose = require('mongoose'); 
 mongoose.set('useFindAndModify', false);
+//returns object AFTER update was applied
+mongoose.set('returnOriginal', false);
 
 const bodyParser = require('body-parser');
 //call in Schemas models
@@ -89,22 +91,39 @@ app.post('/items', function( request,response){
 });
 //trying to update any field of the todo list item
 app.put('/update/:id', function(request, response){
-    
+   
+   let updateItem = {
+    //_id:request.params.id,
+    itemName: request.body.itemName,
+    assignee: request.body.assignee,
+    itemPriority: request.body.itemPriority,
+   }
+    console.log(request.body);
     console.log(request.params.id);
-
-    Item.updateOne({ _id: request.params.id },  
-       
+    console.log("put");
+    Item.findByIdAndUpdate(
+        {_id:request.params.id} , updateItem,
+ //A.findOneAndUpdate(conditions, update, options, callback)      
         function (err, item){
 
         if (err) {
             
-            console.error(err);
-            return true;
+            response.sendStatus(500);
+            return console.error(err);
             }
       
-
+        
         console.log(item);
-        response.status(200).save(item);
+        response.status(200);
+        
+        //response.send(item);
+        item.save (function (err, item){
+            if (err){
+                response.sendStatus(500);
+                return console.error(err);
+            }
+            response.send(item);
+        });
 
     });
 });
@@ -115,7 +134,8 @@ app.delete('/items/:id', function(request, response){
     
     Item.deleteOne ({_id: request.params.id}, function (err){
        
-        if (err){ console.error(err);
+        if (err){ 
+            console.error(err);
             return }
         console.log("deleted");
         response.sendStatus(204);

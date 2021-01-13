@@ -221,7 +221,7 @@ async function deleteItemRequest(id){
        
         
 //async funtion to edit items    
-    async function editItem() {
+    async function editItem(id) {
         let taskUpdate = {
                          
             itemName      : document.getElementById("itemName").value,
@@ -234,32 +234,36 @@ async function deleteItemRequest(id){
         body: JSON.stringify(taskUpdate),
         headers: { "Content-Type": "application/json" },
         };
-        console.log("are we here?")
-        const response = await fetch("/update/", requestOptions);
-        const body = await response.json();
+        console.log("after request");
+
+        const response = await fetch("/update/" +id, requestOptions);
+        console.log(taskUpdate);
+        //const body = await response.json();
         if (response.status != 200) {
-            console.log("What about here?")
-        throw Error("Not updates");
+            console.log("if after await")
+        throw Error("Not updated");
         }
         
         console.log("Hey, we did it!");
-        return true;
+        return body;
         };
 
 
    //takes the information from the input fields and updates them, should return to index page and load updated list.
         function updateItem(){
-            let itemName = document.getElementById("itemName").value;
-            let assignee = document.getElementById("assignee").value;
-            let priority = document.getElementById("priority").value;
-            let completed = document.getElementById("completed").value;
+            // let itemName = document.getElementById("itemName").value;
+            // let assignee = document.getElementById("assignee").value;
+            // let priority = document.getElementById("priority").value;
+            // let completed = document.getElementById("completed").value;
             console.log("new value?")
-        editItem().then( function(item){
-            itemName.value = item.itemName;
-            assignee.value = item.assignee;
-            priority.value = item.itemPriority;
-            completed.value = item.completed;
-            console.log(item);
+        editItem().then( function()
+        {
+            // itemName.value = item.itemName;
+            // assignee.value = item.assignee;
+            // priority.value = item.itemPriority;
+            // completed.value = item.completed;
+            // console.log(item);
+            // console.log("after then")
 
             
             returnToIndex();
