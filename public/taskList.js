@@ -234,18 +234,18 @@ async function deleteItemRequest(id){
         body: JSON.stringify(taskUpdate),
         headers: { "Content-Type": "application/json" },
         };
-        console.log("are we here?");
+        console.log("after request");
 
-        const response = await fetch("/update/" + id, requestOptions);
+        const response = await fetch("/update/" +id, requestOptions);
         console.log(taskUpdate);
         //const body = await response.json();
         if (response.status != 200) {
-            console.log("What about here?")
-        throw Error("Not updates");
+            console.log("if after await")
+        throw Error("Not updated");
         }
         
         console.log("Hey, we did it!");
-        
+        return body;
         };
 
 

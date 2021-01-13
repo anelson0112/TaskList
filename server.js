@@ -1,6 +1,8 @@
 //require mongoose- translates built in to  Node.JS
 const mongoose = require('mongoose'); 
 mongoose.set('useFindAndModify', false);
+//returns object AFTER update was applied
+mongoose.set('returnOriginal', false);
 
 const bodyParser = require('body-parser');
 //call in Schemas models
@@ -90,12 +92,18 @@ app.post('/items', function( request,response){
 //trying to update any field of the todo list item
 app.put('/update/:id', function(request, response){
    
-   let id = request.params.id;
-    
+   let updateItem = {
+    //_id:request.params.id,
+    itemName: request.body.itemName,
+    assignee: request.body.assignee,
+    itemPriority: request.body.itemPriority,
+   }
+    console.log(request.body);
     console.log(request.params.id);
     console.log("put");
-    Item.findByIdAndUpdate({_id: request.params.id},{returnNewDocument: true},
-       
+    Item.findByIdAndUpdate(
+        {_id:request.params.id} , updateItem,
+ //A.findOneAndUpdate(conditions, update, options, callback)      
         function (err, item){
 
         if (err) {
@@ -107,7 +115,7 @@ app.put('/update/:id', function(request, response){
         
         console.log(item);
         response.status(200);
-        //item.update(request.body);
+        
         //response.send(item);
         item.save (function (err, item){
             if (err){
