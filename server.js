@@ -94,7 +94,7 @@ app.put('/update/:id', function(request, response){
     
     console.log(request.params.id);
     console.log("put");
-    Item.findOneAndUpdate({id},{returnNewDocument: true},
+    Item.findByIdAndUpdate({_id: request.params.id},{returnNewDocument: true},
        
         function (err, item){
 
@@ -107,9 +107,15 @@ app.put('/update/:id', function(request, response){
         
         console.log(item);
         response.status(200);
+        //item.update(request.body);
         //response.send(item);
-        item.save();
-        
+        item.save (function (err, item){
+            if (err){
+                response.sendStatus(500);
+                return console.error(err);
+            }
+            response.send(item);
+        });
 
     });
 });

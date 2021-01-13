@@ -221,7 +221,7 @@ async function deleteItemRequest(id){
        
         
 //async funtion to edit items    
-    async function editItem() {
+    async function editItem(id) {
         let taskUpdate = {
                          
             itemName      : document.getElementById("itemName").value,
