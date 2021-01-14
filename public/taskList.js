@@ -1,7 +1,7 @@
-
 const url = window.location.href;
 const myUrl = new URL(url);
-let id = myUrl.searchParams.get('id');
+let g_id = myUrl.searchParams.get('id');
+
 //load entire task list it is in an onload function with the index page
 async function getToDoList(){
     let requestOptions = {
@@ -192,7 +192,7 @@ async function deleteItemRequest(id){
             headers: {"Content-Type" : "application/json"},
         }
         console.log("get one item")
-        const response = await fetch('/item/' + id, requestOptions);
+        const response = await fetch('/item/' + g_id, requestOptions);
         const body = await response.json();
         if(response.status != 200){
             throw Error(body.message);
@@ -221,7 +221,7 @@ async function deleteItemRequest(id){
        
         
 //async funtion to edit items    
-    async function editItem(id) {
+    async function editItem() {
         let taskUpdate = {
                          
             itemName      : document.getElementById("itemName").value,
@@ -236,7 +236,7 @@ async function deleteItemRequest(id){
         };
         console.log("after request");
 
-        const response = await fetch("/update/" +id, requestOptions);
+        const response = await fetch("/update/" + g_id, requestOptions);
         console.log(taskUpdate);
         //const body = await response.json();
         if (response.status != 200) {
@@ -245,7 +245,7 @@ async function deleteItemRequest(id){
         }
         
         console.log("Hey, we did it!");
-        return body;
+        return ;
         };
 
 
@@ -255,7 +255,8 @@ async function deleteItemRequest(id){
             // let assignee = document.getElementById("assignee").value;
             // let priority = document.getElementById("priority").value;
             // let completed = document.getElementById("completed").value;
-            console.log("new value?")
+            console.log("new value?");
+          
         editItem().then( function()
         {
             // itemName.value = item.itemName;
