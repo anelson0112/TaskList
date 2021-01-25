@@ -61,7 +61,8 @@ app.listen(port, function(){
 app.get('/items', function( request,response){
     
     Item.find (function (err, items){
-        if (err) return console.error(err);
+        if (err) 
+        return console.error(err);
         response.send(items);
     });
 });

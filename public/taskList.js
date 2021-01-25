@@ -251,22 +251,12 @@ async function deleteItemRequest(id){
 
    //takes the information from the input fields and updates them, should return to index page and load updated list.
         function updateItem(){
-            // let itemName = document.getElementById("itemName").value;
-            // let assignee = document.getElementById("assignee").value;
-            // let priority = document.getElementById("priority").value;
-            // let completed = document.getElementById("completed").value;
+            
             console.log("new value?");
           
         editItem().then( function()
         {
-            // itemName.value = item.itemName;
-            // assignee.value = item.assignee;
-            // priority.value = item.itemPriority;
-            // completed.value = item.completed;
-            // console.log(item);
-            // console.log("after then")
-
-            
+           
             returnToIndex();
         }).catch(function (err){
             console.log(err)
