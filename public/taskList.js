@@ -40,13 +40,13 @@ async function getToDoList(){
                      <div class ="importance  col-md-2">Priority: ${body[i].itemPriority} </div>
                      <div class = col-md-2">
                      <input type = "checkbox" class = "completed" name = "completed" id = "completed">
-                                 <labelfor = "completed">Completed</label> 
+                                 <label for = "completed">Completed</label> 
                      </div>           
                      <div class="delete col-12 col-md-1" id = "delete" data-id="${body[i]._id}"  ><i class="fas fa-trash" data-id="${body[i]._id}"></i></div>     
                      <div class="edit  col-md-1" data-id="${body[i]._id}"><a href="./update.html?id=${body[i]._id}" data-id="${body[i]._id}">Edit</a></div>
               </div>
             </div>`;
-
+ 
              listDiv.innerHTML += itemHTML;
             }
 
@@ -160,7 +160,7 @@ async function deleteItemRequest(id){
 
     let requestOptions = {
     method  : "DELETE",
-    //body    : JSON.stringify(data),
+    
     headers : {"Content-Type": "application/json"}
     }
     console.log("About to fetch");
@@ -169,10 +169,10 @@ async function deleteItemRequest(id){
 
     return false;
     
-    
+};  
         
 //confirms intent, then deletes item if confirmed, returns to index to updated task list
-    };
+    
     function deleteItem(id){
         confirm("Are you sure you want to delete?");
         
