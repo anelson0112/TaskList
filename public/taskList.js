@@ -1,7 +1,7 @@
-
 const url = window.location.href;
 const myUrl = new URL(url);
-let id = myUrl.searchParams.get('id');
+let g_id = myUrl.searchParams.get('id');
+
 //load entire task list it is in an onload function with the index page
 async function getToDoList(){
     let requestOptions = {
@@ -40,13 +40,13 @@ async function getToDoList(){
                      <div class ="importance  col-md-2">Priority: ${body[i].itemPriority} </div>
                      <div class = col-md-2">
                      <input type = "checkbox" class = "completed" name = "completed" id = "completed">
-                                 <labelfor = "completed">Completed</label> 
+                                 <label for = "completed">Completed</label> 
                      </div>           
                      <div class="delete col-12 col-md-1" id = "delete" data-id="${body[i]._id}"  ><i class="fas fa-trash" data-id="${body[i]._id}"></i></div>     
                      <div class="edit  col-md-1" data-id="${body[i]._id}"><a href="./update.html?id=${body[i]._id}" data-id="${body[i]._id}">Edit</a></div>
               </div>
             </div>`;
-
+ 
              listDiv.innerHTML += itemHTML;
             }
 
@@ -160,7 +160,7 @@ async function deleteItemRequest(id){
 
     let requestOptions = {
     method  : "DELETE",
-    //body    : JSON.stringify(data),
+    
     headers : {"Content-Type": "application/json"}
     }
     console.log("About to fetch");
@@ -169,10 +169,10 @@ async function deleteItemRequest(id){
 
     return false;
     
-    
+};  
         
 //confirms intent, then deletes item if confirmed, returns to index to updated task list
-    };
+    
     function deleteItem(id){
         confirm("Are you sure you want to delete?");
         
@@ -192,7 +192,7 @@ async function deleteItemRequest(id){
             headers: {"Content-Type" : "application/json"},
         }
         console.log("get one item")
-        const response = await fetch('/item/' + id, requestOptions);
+        const response = await fetch('/item/' + g_id, requestOptions);
         const body = await response.json();
         if(response.status != 200){
             throw Error(body.message);
@@ -221,7 +221,7 @@ async function deleteItemRequest(id){
        
         
 //async funtion to edit items    
-    async function editItem(id) {
+    async function editItem() {
         let taskUpdate = {
                          
             itemName      : document.getElementById("itemName").value,
@@ -236,7 +236,7 @@ async function deleteItemRequest(id){
         };
         console.log("after request");
 
-        const response = await fetch("/update/" +id, requestOptions);
+        const response = await fetch("/update/" + g_id, requestOptions);
         console.log(taskUpdate);
         //const body = await response.json();
         if (response.status != 200) {
@@ -245,27 +245,18 @@ async function deleteItemRequest(id){
         }
         
         console.log("Hey, we did it!");
-        return body;
+        return ;
         };
 
 
    //takes the information from the input fields and updates them, should return to index page and load updated list.
         function updateItem(){
-            // let itemName = document.getElementById("itemName").value;
-            // let assignee = document.getElementById("assignee").value;
-            // let priority = document.getElementById("priority").value;
-            // let completed = document.getElementById("completed").value;
-            console.log("new value?")
+            
+            console.log("new value?");
+          
         editItem().then( function()
         {
-            // itemName.value = item.itemName;
-            // assignee.value = item.assignee;
-            // priority.value = item.itemPriority;
-            // completed.value = item.completed;
-            // console.log(item);
-            // console.log("after then")
-
-            
+           
             returnToIndex();
         }).catch(function (err){
             console.log(err)

@@ -23,6 +23,8 @@ const port = 3000;
 
 
 
+
+
 //connect to the cluster I created in Atlas
 const mongoDB = "mongodb+srv://anelson0112:10qpalzm7YGV@taskcluster.7xytg.mongodb.net/TaskListdb?retryWrites=true&w=majority";
 
@@ -59,7 +61,8 @@ app.listen(port, function(){
 app.get('/items', function( request,response){
     
     Item.find (function (err, items){
-        if (err) return console.error(err);
+        if (err) 
+        return console.error(err);
         response.send(items);
     });
 });
