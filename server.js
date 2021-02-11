@@ -1,3 +1,4 @@
+require('dotenv').config()
 //require mongoose- translates built in to  Node.JS
 const mongoose = require('mongoose'); 
 mongoose.set('useFindAndModify', false);
