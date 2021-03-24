@@ -145,7 +145,7 @@ app.delete('/items/:id', function(request, response){
         response.sendStatus(204);
     });
 });
-//patch sincle item with checkbox
+//patch single item with checkbox
 app.patch('/items/:id', function(request, response)
 {
     console.log(request.params.id)
