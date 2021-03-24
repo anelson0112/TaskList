@@ -20,8 +20,8 @@ const path = require ('path');
 const app = express();
 
 //declare port we want to connect to
-const port = 3000;
-
+// const port = 3000;
+port = process.env.PORT || 18872;
 
 
 
